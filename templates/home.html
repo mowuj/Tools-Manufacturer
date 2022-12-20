@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block body %}
+{% load static %}
+<!------------
+    Slider  
+------------->
+<div class="container">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="row panda-background bg-gradient rounded border p-5 d-flex align-items-center">
+                    <div class="col-lg-7">
+                        <h1>Cool Dude Headphone</h1>
+                        <p>This is the best headphone in the world for people who just want to waste time in front of
+                            funky world.</p>
+                        <h1>$420</h1>
+                        <button class="btn" style="background-color:#FF589B">Buy Now</button>
+
+                    </div>
+                    <div class="col-lg-5">
+                        <img src="{% static 'images/banner4.jpg' %}" class="d-block w-100" alt="..."
+                            style="height: 30rem">
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="carousel-item">
+                <div class="row panda-background bg-gradient rounded border p-5 d-flex align-items-center">
+                    <div class="col-lg-7">
+                        <h1>Cool Dude Headphone</h1>
+                        <p>This is the best headphone in the world for people who just want to waste time in front of
+                            funky world.</p>
+                        <h1>$420</h1>
+                        <button class="btn " style="background-color:#FF589B">Buy Now</button>
+
+                    </div>
+                    <div class="col-lg-5">
+                        <img src="{% static 'images/banner2.jpg' %}" class="d-block w-100" alt="..."
+                            style="height: 30rem">
+                    </div>
+
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row panda-background bg-gradient rounded border p-5 d-flex align-items-center">
+                    <div class="col-lg-7">
+                        <h1>Cool Dude Headphone</h1>
+                        <p>This is the best headphone in the world for people who just want to waste time in front of
+                            funky world.</p>
+                        <h1>$420</h1>
+                        <button class="btn " style="background-color:#FF589B">Buy Now</button>
+
+                    </div>
+                    <div class="col-lg-5">
+                        <img src="{% static 'images/banner3.jpg' %}" class="d-block w-100" alt="..."
+                            style="height: 30rem">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+<!------------
+    Slider  
+----------->
+<h2 class="text-center my-3">Our Products</h2>
+<div class="container">
+    
+      
+    
+    <div class="row row-cols- row-cols-md- g-3">
+        {% for i in product %}
+        <div class="col">
+            <div class="card h-100">
+                <img src="{{i.image.url}}"class="card-img-top" alt="...">
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{i.name}}</h5>
+                    <h6 class="card-title">Price:{{i.price}}</h6>
+                    
+                    <h6 class="card-title">Available:{{i.quantity}}</h6>
+                    <h6 class="card-title">Discount:{{i.discount_in_percentage}}</h6>
+                    <a href="{% url 'detail' i.id %}" class="btn "style="background-color:#FF589B" type="submit">Details</a>
+                </div>
+            </div>
+        </div>
+       
+        {% endfor %}
+    </div>
+    
+    
+</div>
+
+<!--------------
+    Contact section  
+--------------->
+<section class="my-5">
+    <div mt-5 id="subscribe" style="height: 300px; background-color: #fceae8"
+        class="container  d-flex justify-content-center align-items-center rounded-3">
+        <div class="">
+            <h2>LET'S STAY IN TOUCH</h2>
+            <p>Get updates on sales, specials and more</p>
+            <input class="form-control" type="text" placeholder="Your Email">
+            <br>
+            <button style="background-color:#FF589B" class="btn panda-btn">submit</button>
+        </div>
+    </div>
+</section>
+{% endblock body %}

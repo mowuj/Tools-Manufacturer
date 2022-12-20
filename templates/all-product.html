@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+
+
+
+    <div class="row row-cols- row-cols-md- g-3">
+        {% for i in product %}
+        <div class="col">
+            <div class="card h-100">
+                <img src="{{i.image.url}}" class="card-img-top" alt="...">
+
+                <div class="card-body">
+                    <h5 class="card-title">{{i.name}}</h5>
+                    <h6 class="card-title">Price:{{i.price}}</h6>
+
+                    <h6 class="card-title">Available:{{i.quantity}}</h6>
+                    <h6 class="card-title">Discount:{{i.discount_in_percentage}}</h6>
+                    
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+
+
+</div>
+
+{% endblock body %}

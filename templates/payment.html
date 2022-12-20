@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="card mb-3" style="max-width: 540px;">
+  {% for i in order %}
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{i.product.image.url}}" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">Order By:{{i.name}}</h5>
+        <p class="card-text">Product: {{i.product.name}}</p>
+        <p class="card-text">Email: {{i.email}}</p>
+        <p class="card-text">Phone{{i.phone}}</p>
+        <p class="card-text">Quantity:: {{i.quantity}}</p>
+        <p class="card-text">Discount Per:{{i.product.discount_in_percentage}}</p>
+        <p class="card-text">Discount Price:{{i.product.discounted_price}}</p>
+        <p class="card-text">Sell Price:{{i.product.sell_price}}</p>
+        <p class="card-text">Total Price:{{i.product.sell_price}}*{{i.quantity}}</p>
+        
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <p>{{price_arr}}</p>
+</div>
+{{order.name}}
+{% endblock body %}

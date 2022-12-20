@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block body %}
+<table class="table table-dark table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Index</th>
+            <th scope="col">Name</th>            
+            <th scope="col">Product</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+            <th scope="col">Discount</th>
+            <th scope="col">Discount Price</th>
+            <th scope="col">Sell Price</th>
+            <th scope="col">Total</th>
+            <th scope="col">Photo</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in order %}
+        
+        
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.name}}</td>
+            <td>{{i.product.name}}</td>
+            <td>{{i.quantity}}</td>
+            <td>{{i.product.price}}</td>
+            <td>{{i.product.discount_in_percentage}}</td>
+            <td>{{i.product.discounted_price}}</td>
+            <td>{{i.product.sell_price}}</td>
+            <td>{% widthratio i.product.sell_price 1 i.quantity %}</td>
+            
+            <td><img src="{{i.product.image.url}}" style="width:50px;height:40px;"class="rounded-circle" alt="product img"></td>
+            <td><button type="submit" class="btn" style="background-color:#FF589B">Payment</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Delete</button>
+            </td>
+
+        </tr>
+        {% endfor %}
+        
+    </tbody>
+</table>
+{% endblock body %}

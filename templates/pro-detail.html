@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block body %}
+  {% for i in details %}
+  
+    <div class="container my-5">
+        <div class="row">
+                    <div class="col-lg-5 ">
+                        <img src="{{i.image.url}}" class="d-block w-100" alt="..." style="height: 30rem">
+                    </div>
+                    <div class="col-lg-7 mt-5">
+                        <h3>Name: {{i.name}}</h3>
+                        <h5>Price: {{i.price}}</h5>
+                        <h5>Available: {{i.quantity}}</h5>
+                        <h5>Minimum Order: {{i.minimum_order}}</h5>
+                        <h5>Discount: {{i.discount_in_percentage}}</h5>
+                        <h5>Discount Price: {{i.discounted_price}}</h5>
+                        <h5>Selling Price: {{i.sell_price}}</h5>
+                        <p>Description: {{i.description}}</p>
+                        
+                        <button class="btn " style="background-color:#FF589B" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Order Now</button>
+                    
+                    </div>
+
+        </div>
+    </div>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1> -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% for i in details %}
+                <h3 class="text-center">For <span style="color:#FF589B">{{i.name}}</span></h3>
+                
+                
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn" style="background-color:#FF589B" >Order</button>
+                    </div>
+                </form>
+                {% endfor %}
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+{% endblock body %}

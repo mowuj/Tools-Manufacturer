@@ -33,7 +33,7 @@
             <td>{% widthratio i.product.sell_price 1 i.quantity %}</td>
             
             <td><img src="{{i.product.image.url}}" style="width:50px;height:40px;"class="rounded-circle" alt="product img"></td>
-            <td><button type="submit" class="btn" style="background-color:#FF589B">Payment</button>
+            <td><a type="submit" class="btn" style="background-color:#FF589B" href="{% url 'payment' i.id %}">Payment</a>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Delete</button>
             </td>
 
@@ -42,4 +42,5 @@
         
     </tbody>
 </table>
+
 {% endblock body %}

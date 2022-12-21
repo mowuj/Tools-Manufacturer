@@ -3,10 +3,30 @@
 {% block body %}
 <div class="container">
 
+<!-- <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>First name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in products %}
+        <tr>
+            <td>{{ i.name }}</td>
+            <td>{{ i.price }}</td>
+            <td>{{ i.sell_price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table> -->
+<div class="container">
+
 
 
     <div class="row row-cols- row-cols-md- g-3">
-        {% for i in product %}
+        {% for i in products %}
         <div class="col">
             <div class="card h-100">
                 <img src="{{i.image.url}}" class="card-img-top" alt="...">
@@ -17,7 +37,8 @@
 
                     <h6 class="card-title">Available:{{i.quantity}}</h6>
                     <h6 class="card-title">Discount:{{i.discount_in_percentage}}</h6>
-                    
+                    <a href="" class="btn " style="background-color:#FF589B"
+                        type="submit">Details</a>
                 </div>
             </div>
         </div>
@@ -26,6 +47,28 @@
     </div>
 
 
+</div>
+{% if products.has_other_pages %}
+<ul class="pagination">
+    {% if products.has_previous %}
+    <li><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+    <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in products.paginator.page_range %}
+    {% if products.number == i %}
+    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% else %}
+    <li><a href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+    {% endfor %}
+    {% if products.has_next %}
+    <li><a href="?page={{ products.next_page_number }}">&raquo;</a></li>
+    {% else %}
+    <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+</ul>
+{% endif %}
 </div>
 
 {% endblock body %}

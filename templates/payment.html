@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="card mb-3" style="max-width: 540px;">
-  {% for i in order %}
+  {% for i in orders %}
   <div class="row g-0">
     <div class="col-md-4">
       <img src="{{i.product.image.url}}" class="img-fluid rounded-start" alt="...">
@@ -17,13 +17,22 @@
         <p class="card-text">Discount Per:{{i.product.discount_in_percentage}}</p>
         <p class="card-text">Discount Price:{{i.product.discounted_price}}</p>
         <p class="card-text">Sell Price:{{i.product.sell_price}}</p>
-        <p class="card-text">Total Price:{{i.product.sell_price}}*{{i.quantity}}</p>
+        <p class="card-text">Total Price:{% widthratio i.product.sell_price 1 i.quantity %}</p>
         
       </div>
     </div>
   </div>
+  <!-- {{i.product.name}}
+  {{i.quantity}}
   {% endfor %}
-  <p>{{price_arr}}</p>
+  <p>{{price_arr}}</p> -->
 </div>
-{{order.name}}
+<h2>Buy for 5.00BDT</h2>
+<form action="url 'charge" method="POST">
+  {% csrf_token %}
+
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{key}}"
+    data-description="Payment Gateway" data-amount="500" data-locale="auto"></script>
+</form>
+<!-- {{order.name}} -->
 {% endblock body %}

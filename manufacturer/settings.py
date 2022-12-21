@@ -27,9 +27,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'toolsapp',
+    'toolsapp.apps.ToolsappConfig',
     'fontawesomefree',
     'crispy_forms',
+    'payments.apps.PaymentsConfig'
 ]
 
 MIDDLEWARE = [
@@ -43,11 +44,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'manufacturer.urls'
-
+TEMPLATE_DIR = os.path.join(BASE_DIR,"templates")
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,3 +119,7 @@ STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STRIPE_SECRET_KEY='sk_test_51L3HzCFICgNuMVETcGEvtXvTSgk9VJqgXRNe4BAK7H1BD0Gmtq0GiMcNKixBg3TK6p3kS34S4jEtN03ShY05hYgC00vhKKsOAi'
+STRIPE_PUBLISHABLE_KEY='pk_test_51L3HzCFICgNuMVET4lm1alcn4VyaJfMWJm0ke7akqFag2hi9hvzX0ZHIYGh48uaHZh5f2T4dUVyA44XHPcBVwelS006dwqyc2O'
+STRIPE_ENDPOINT_SECRET='whsec_ee7ae2dd30f68bbe98ee09fa6822adda522a062b3805ceeab4e66e50f2352b78'

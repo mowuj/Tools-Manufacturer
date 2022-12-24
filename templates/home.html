@@ -84,7 +84,7 @@
 <!------------
     Slider  
 ----------->
-<h2 class="text-center my-3">Our Products</h2>
+<h2 class="text-center my-3 textt">Our Products</h2>
 <div class="container">
     
       
@@ -96,12 +96,10 @@
                 <img src="{{i.image.url}}"class="card-img-top" alt="...">
                 
                 <div class="card-body">
-                    <h5 class="card-title">{{i.name}}</h5>
-                    <h6 class="card-title">Price:{{i.price}}</h6>
-                    
-                    <h6 class="card-title">Available:{{i.quantity}}</h6>
-                    <h6 class="card-title">Discount:{{i.discount_in_percentage}}</h6>
-                    <a href="{% url 'detail' i.id %}" class="btn "style="background-color:#FF589B" type="submit">Details</a>
+                    <h5 class="card-title"><a href="{% url 'productdetail' i.slug %}">{{i.title}}</a></h5>
+                    <p class="card-title">Price: <del style="color:red">{{i.marked_price}}</del> TK.{{i.sell_price}}</p>
+                    <a href="{% url 'addtocart' i.id %}" class="btn " style="background-color:#FF589B" type="submit">Add to Cart</a>
+                   
                 </div>
             </div>
         </div>
@@ -112,6 +110,36 @@
     
 </div>
 
+<!-- Product  -->
+<!-- <section id="testimonial" className="testimonials pt-70 pb-70">
+    <div className="container mt-5">
+
+        <div className="text-center ">
+            <h3 className="sectionTitle">What Our Clients are Saying?</h3>
+        </div>
+
+        <div className="row">
+            <div className="col-md-12">
+                <OwlCarousel id="customer-testimonoals" className="owl-carousel owl-theme" {...options}>
+                    {% for i in product %}
+                    <div className="item">
+                        <div className="shadow-effect">
+                            <img className="img-circle" src="{{i.image.url}}" alt="user" />
+
+                            <p>No Reviews</p>
+                        </div>
+                        <div className="testimonial-name">
+                            <h5>Lucky Tools</h5>
+                            <small>Khilkhet,Dhaka</small>
+                        </div>
+                    </div> :
+                {% endfor %}
+                </OwlCarousel>
+            </div>
+        </div>
+    </div>
+</section> -->
+<!-- product  -->
 <!--------------
     Contact section  
 --------------->

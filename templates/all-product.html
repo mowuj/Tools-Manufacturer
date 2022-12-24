@@ -1,30 +1,9 @@
 {% extends "base.html" %}
 
 {% block body %}
+
 <div class="container">
-
-<!-- <table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Username</th>
-            <th>First name</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for i in products %}
-        <tr>
-            <td>{{ i.name }}</td>
-            <td>{{ i.price }}</td>
-            <td>{{ i.sell_price }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table> -->
-<div class="container">
-
-
-
+    
     <div class="row row-cols- row-cols-md- g-3">
         {% for i in products %}
         <div class="col">
@@ -32,11 +11,10 @@
                 <img src="{{i.image.url}}" class="card-img-top" alt="...">
 
                 <div class="card-body">
-                    <h5 class="card-title">{{i.name}}</h5>
-                    <h6 class="card-title">Price:{{i.price}}</h6>
+                    <h5 class="card-title">{{i.title}}</h5>
+                    <p class="card-title">Price: <del style="color:red" >{{i.marked_price}}</del> TK.{{i.sell_price}}</p>
 
-                    <h6 class="card-title">Available:{{i.quantity}}</h6>
-                    <h6 class="card-title">Discount:{{i.discount_in_percentage}}</h6>
+                    
                     <a href="" class="btn " style="background-color:#FF589B"
                         type="submit">Details</a>
                 </div>
@@ -69,6 +47,5 @@
     {% endif %}
 </ul>
 {% endif %}
-</div>
 
 {% endblock body %}

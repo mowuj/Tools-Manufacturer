@@ -30,16 +30,15 @@
             <td>{{i.product.discount_in_percentage}}</td>
             <td>{{i.product.discounted_price}}</td>
             <td>{{i.product.sell_price}}</td>
-            <td>{% widthratio i.product.sell_price 1 i.quantity %}</td>
+            <td>{{i.total_amount}}</td>
             
             <td><img src="{{i.product.image.url}}" style="width:50px;height:40px;"class="rounded-circle" alt="product img"></td>
-            <td><a type="submit" class="btn" style="background-color:#FF589B" href="{% url 'payment' i.id %}">Payment</a>
+            <td><a type="submit" class="btn" style="background-color:#FF589B" href="{% url 'payPage'%}">Payment</a>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Delete</button>
             </td>
 
         </tr>
         {% endfor %}
-        
     </tbody>
 </table>
 

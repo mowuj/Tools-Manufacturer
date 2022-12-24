@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+    <div>
+        <h1>Our Products</h1>
+    </div>
+    {% for cate in categories %}
+    <h4>{{cate.title}}</h4>
+    <div class="row">
+        {% for p in cate.product_set.all %}
+          <div class="col-md-3">
+            <div class="m-4">
+                <a href="{% url 'productdetail' p.slug %}">{{p.title}}</a>
+                <img src="{{p.image.url}}" class="img-fluid" style="height:2500;object-fit:cover;" alt="">
+                <p class="card-title">Price: <del style="color:red">{{p.marked_price}}</del> TK.{{p.sell_price}}</p>
+                <a href="{% url 'addtocart' p.id %}" class="btn " style="background-color:#FF589B" type="submit">Add to Cart</a>
+
+            </div>
+          </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock body %}

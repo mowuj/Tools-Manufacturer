@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'toolsapp.apps.ToolsappConfig',
     'fontawesomefree',
     'crispy_forms',
-    'payments.apps.PaymentsConfig'
+    
 ]
 
 MIDDLEWARE = [

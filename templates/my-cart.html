@@ -28,15 +28,19 @@
                         <td>{{i.quantity}}</td>
                         <td>{{i.subtotal}}</td>
                         <td>
-                            <a href="" class="btn btn-primary">+</a>
-                            <a href="" class="btn btn-warning">+</a>
-                            <a href="" class="btn btn-danger">X</a>
+                            <a href="{% url 'manage-cart' i.id%}?action=inc" class="btn btn-primary">+</a>
+                            <a href="{% url 'manage-cart' i.id%}?action=dcr" class="btn btn-warning">-</a>
+                            <a href="{% url 'manage-cart' i.id%}?action=rmv" class="btn btn-danger">X</a>
                         </td>
                     </tr>
                     {% endfor %}
                     <tr>
                         <th colspan="5" class="text-end">Total = </th>
                         <th>TK. {{cart.total}}</th>
+                        {% if cart.cartproduct_set.all %}
+                        <th><a href="{% url 'empty-cart' %}">Empty Cart</a></th>
+                        {% endif %}
+                        
                     </tr>
                 </tbody>
             </table>

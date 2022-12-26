@@ -7,7 +7,8 @@ import stripe
 from django.conf import settings
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import View,ListView, TemplateView
+from django.views.generic import View,ListView, TemplateView,CreateView
+from django.urls import reverse_lazy
 def home(request):
     product=Product.objects.all().order_by("-id")[:5]
     
@@ -97,7 +98,7 @@ class MyCartView(TemplateView):
         context['cart']=cart
         return context
 
-class ManangeCartView(View):
+class ManageCartView(View):
     def get(self,request,*args,**kwargs):
         
         cp_id=self.kwargs['cp_id']
@@ -160,24 +161,50 @@ def checkout_session(request,ct_id):
         ],
         
         mode='payment',
-        success_url=YOUR_DOMAIN + '/success.html',
+        success_url=YOUR_DOMAIN + '/success',
         cancel_url=YOUR_DOMAIN + '/cancel.html',
     )
     return redirect (session.url,code=3)
 
-def success(request,ct_id):
-    cart=Cart.objects.get(pk=ct_id)
-    cart.cartproduct_set.all().delete()
-    cart.total=0
-    cart.save(),
+def success(request):
+    
     return render(request,'success.html')
 
 #  #cancel view
 def cancel(request):
  return render(request,'cancel.html')
  
-# class CheckoutView(TemplateView):
-#     template_name=
+class CheckoutView(CreateView):
+    template_name='checkout.html'
+    form_class=CheckoutForm
+    success_url=reverse_lazy('checkout_session')
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        cart_id=self.request.session.get('cart_id',None)
+        print(cart_id)
+        if cart_id:
+            cart_obj=Cart.objects.get(id=cart_id)
+            print(cart_obj)
+        else:
+            cart_obj=None
+        context['cart']=cart_obj
+        return context
+
+    def form_valid(self,form):
+        cart_id=self.request.session.get('cart_id')
+        if cart_id:
+            cart_obj=Cart.objects.get(id=cart_id)
+            form.instance.cart=cart_obj
+            form.instance.subtotal=cart_obj.total
+            form.instance.discount=0
+            form.instance.total=cart_obj.total
+            form.instance.order_status='Order Received'
+            # del self.request.session['cart_id']
+        else:
+            return redirect('home')
+
+        return super().form_valid(form)
 
 # stripe.api_key = settings.STRIPE_SECRET_KEY
 # YOUR_DOMAIN = 'http://127.0.0.1:8000'

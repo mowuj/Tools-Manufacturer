@@ -46,11 +46,10 @@
                     </tr>
                     <tr>
                         <th colspan="5" class="text-end"> 
-                            <form action="{% url 'checkout_session' cart.id %}" method="post">
-                                {% csrf_token %}
-                                <input type="submit" value="Proceed To Payment" class="btn btn-primary">
-                            </form>
                             
+                            {% if cart.cartproduct_set.all %}
+                            <a class="btn btn-primary" href="{% url 'checkout' %}">Checkout</a>
+                            {% endif %}
                         </th>
                     </tr>
                 </tbody>

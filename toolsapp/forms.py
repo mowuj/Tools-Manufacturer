@@ -15,16 +15,13 @@ class SignUpForm(UserCreationForm):
             'password2'
             ]
 
-# class OrderForm(forms.ModelForm):
-#     class Meta:
-#         model=Order
-#         fields=[
-#             'name',
-#             'email',
-#             'phone',
-#             'quantity',
-#             'postal_code',
-#             'village',
-#             'district',
-#             'division'
-#             ]
+class CheckoutForm(ModelForm):
+    class Meta:
+        model=Order
+        fields=[
+            'ordered_by',
+            'shipping_address',
+            'phone',
+            'email',
+            
+        ]

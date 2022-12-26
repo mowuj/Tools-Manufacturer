@@ -7,9 +7,9 @@ import stripe
 from django.conf import settings
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import View, TemplateView
+from django.views.generic import View,ListView, TemplateView
 def home(request):
-    product=Product.objects.all().order_by("-id")
+    product=Product.objects.all().order_by("-id")[:5]
     
     context={
         'product':product
@@ -138,14 +138,47 @@ class EmptyCartView(View):
 
         return redirect('my-cart')
 
+stripe.api_key = settings.STRIPE_SECRET_KEY
+YOUR_DOMAIN = 'http://127.0.0.1:8000'
+def checkout_session(request,ct_id):
+    cart=Cart.objects.get(pk=ct_id)
+    
+    session=stripe.checkout.Session.create(
+        
+        payment_method_types=['card'],
+        line_items=[
+        {
+            'price_data': {
+            'currency': 'inr',
+            'product_data': {
+                'name': 'Total',
+            },
+            'unit_amount': cart.total*100,
+            },
+            'quantity': 1,
+        },
+        ],
+        
+        mode='payment',
+        success_url=YOUR_DOMAIN + '/success.html',
+        cancel_url=YOUR_DOMAIN + '/cancel.html',
+    )
+    return redirect (session.url,code=3)
 
-# def success(request):
-#  return render(request,'success.html')
+def success(request,ct_id):
+    cart=Cart.objects.get(pk=ct_id)
+    cart.cartproduct_set.all().delete()
+    cart.total=0
+    cart.save(),
+    return render(request,'success.html')
 
 #  #cancel view
-# def cancel(request):
-#  return render(request,'cancel.html')
+def cancel(request):
+ return render(request,'cancel.html')
  
+# class CheckoutView(TemplateView):
+#     template_name=
+
 # stripe.api_key = settings.STRIPE_SECRET_KEY
 # YOUR_DOMAIN = 'http://127.0.0.1:8000'
 

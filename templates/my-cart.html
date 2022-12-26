@@ -38,9 +38,20 @@
                         <th colspan="5" class="text-end">Total = </th>
                         <th>TK. {{cart.total}}</th>
                         {% if cart.cartproduct_set.all %}
-                        <th><a href="{% url 'empty-cart' %}">Empty Cart</a></th>
+                        
+                        <th>
+                            <a href="{% url 'empty-cart' %}">Empty Cart</a></th>
                         {% endif %}
                         
+                    </tr>
+                    <tr>
+                        <th colspan="5" class="text-end"> 
+                            <form action="{% url 'checkout_session' cart.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="submit" value="Proceed To Payment" class="btn btn-primary">
+                            </form>
+                            
+                        </th>
                     </tr>
                 </tbody>
             </table>

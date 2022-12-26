@@ -10,8 +10,9 @@ urlpatterns = [
     path('manage-cart/<int:cp_id>',ManangeCartView.as_view(),name='manage-cart'),
     path('empty-cart',EmptyCartView.as_view(),name='empty-cart'),
     # path('payPage',payPage,name='payPage'),
-    # path('create-checkout-session/', create_checkout_session, name='checkout'),
-    # path('success.html/', success,name='success'),
-    # path('cancel.html/',cancel,name='cancel'),
+    path('checkout_session/<int:ct_id>', checkout_session, name='checkout_session'),
+    path('success.html', success,name='success'),
+    path('cancel.html/',cancel,name='cancel'),
+    # path('checkout/',CheckoutView.as_view(),name='checkout'),
     # path('webhooks/stripe/',webhook,name='webhook'),
 ]

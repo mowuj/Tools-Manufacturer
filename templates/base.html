@@ -30,9 +30,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'product' %}">Our Products</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
-    aria-controls="offcanvasExample" href="#">Dashboard</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dashboard
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'allorder' %}">All Orders</a></li>
+                            <li><a class="dropdown-item" href="#">Add New</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="{% url 'my-cart' %}">Cart</a>
@@ -52,29 +61,7 @@
     <!-- offcanvas  -->
 
 
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Dashboard</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <div>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Add Items</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
-                        aria-controls="offcanvasExample" href="#">Total Items</a>
-                </li>
-                
-            </ul>
-        </div>
-    </div>
-</div>
+
     <!-- offcanvas  -->
 
    

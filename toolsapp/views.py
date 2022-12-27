@@ -26,6 +26,9 @@ def allProduct(request):
     }
     return render(request,'products.html',context)
 
+def addProduct(request):
+    return render(request,'addproduct.html')
+
 class ProductDetailView(TemplateView):
     template_name='pro-detail.html'
 
@@ -186,6 +189,13 @@ class AddressView(TemplateView):
         context['cart']=cart_obj
         return context
 
+def allOrder(request):
+    cart=Cart.objects.all()
+    context={
+        'cart':cart
+    }
+    return render(request,'allorder.html',context)
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 YOUR_DOMAIN = 'http://127.0.0.1:8000'
 def checkout_session(request,id):
@@ -211,6 +221,7 @@ def checkout_session(request,id):
         success_url=YOUR_DOMAIN + '/success',
         cancel_url=YOUR_DOMAIN + '/cancel.html',
     )
+    del request.session['cart_id']
     return redirect (session.url,code=3)
 
 def success(request):

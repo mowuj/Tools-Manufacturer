@@ -104,21 +104,3 @@ class Order(models.Model):
 #     def __str__(self):
 #         return str(self.name)
 
-# class Order(models.Model):
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     paid= models.BooleanField(default=False)
-#     name=models.CharField(max_length = 150)
-#     email= models.EmailField(blank=True,null=True)
-#     phone= models.CharField(max_length = 150)
-#     quantity=models.IntegerField()
-#     total_amount = models.IntegerField(null=True, blank=True)
-#     postal_code= models.IntegerField()
-#     village=models.CharField(max_length = 150)
-#     district=models.CharField(max_length = 150,blank=True,null=True)
-#     division=models.CharField(max_length = 150,blank=True,null=True)
-#     @property
-#     def total_amount(self):
-#         return ((self.product.sell_price * self.quantity))
-#     def __str__(self):
-#         return str(self.product.name)

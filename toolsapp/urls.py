@@ -4,6 +4,7 @@ from .views import *
 urlpatterns = [
     path('',home,name='home'),
     path('product',allProduct,name='product'),
+    path('addproduct',addProduct,name='addproduct'),
     path('productdetail/<slug:slug>/',ProductDetailView.as_view(),name='productdetail'),
     path('add-to-cart/<int:id>',AddToCartView.as_view(),name='addtocart'),
     path('my-cart',MyCartView.as_view(),name='my-cart'),
@@ -15,6 +16,6 @@ urlpatterns = [
     path('checkout_session/<int:id>/', checkout_session, name='checkout_session'),
     path('success', success,name='success'),
     path('cancel.html/',cancel,name='cancel'),
-    
+    path('allorder',allOrder,name='allorder')
     # path('webhooks/stripe/',webhook,name='webhook'),
 ]

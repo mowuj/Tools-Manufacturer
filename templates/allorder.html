@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block body %}
+<table class="table table-dark table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Index</th>
+            <th scope="col">ordered_by</th>
+            <th scope="col"> shipping_address</th>
+            <th scope="col"> Product</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in cart %}
+
+
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.order.ordered_by}}</td>
+            <td>{{i.order.shipping_address}}</td>
+            <td>{{i.order.subtotal}}</td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock body %}

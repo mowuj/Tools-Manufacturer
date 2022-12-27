@@ -16,6 +16,8 @@ urlpatterns = [
     path('checkout_session/<int:id>/', checkout_session, name='checkout_session'),
     path('success', success,name='success'),
     path('cancel.html/',cancel,name='cancel'),
-    path('allorder',allOrder,name='allorder')
-    # path('webhooks/stripe/',webhook,name='webhook'),
+    path('allorder',allOrder,name='allorder'),
+    path('register',CustomerRegisterView.as_view(),name='register'),
+    path('logout',CustomerLogoutView.as_view(),name='logout'),
+    path('login',CustomerLoginView.as_view(),name='login'),
 ]

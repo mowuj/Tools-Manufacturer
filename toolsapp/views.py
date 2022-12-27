@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth import authenticate,login,logout
 from .models import *
 from .forms import *
 from django.db.models import Sum
@@ -7,7 +8,7 @@ import stripe
 from django.conf import settings
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import View,ListView, TemplateView,CreateView
+from django.views.generic import View,ListView, TemplateView,CreateView,FormView
 from django.urls import reverse_lazy
 def home(request):
     product=Product.objects.all().order_by("-id")[:5]
@@ -195,6 +196,40 @@ def allOrder(request):
         'cart':cart
     }
     return render(request,'allorder.html',context)
+
+class CustomerRegisterView(CreateView):
+    template_name='customerregister.html'
+    form_class=CustomerRegisterForm
+    success_url=reverse_lazy('home')
+    def form_valid(self,form):
+        username=form.cleaned_data.get('username')
+        password=form.cleaned_data.get('password')
+        email=form.cleaned_data.get('email')
+        user=User.objects.create_user(username,email,password)
+        form.instance.user=user
+        login(self.request,user)
+        return super().form_valid(form)
+
+class CustomerLogoutView(View):
+    def get(self,request):
+        logout(request)
+        return redirect('home')
+
+class CustomerLoginView(FormView):
+    template_name='login.html'
+    form_class=CustomerLoginForm
+    success_url=reverse_lazy('home')
+    def form_valid(self,form):
+        username=form.cleaned_data.get('username')
+        password=form.cleaned_data.get('password')
+        user=authenticate(username=username,password=password)
+        if user is not None and user.customer:
+            login(self.request,user)
+        else:
+            return render(self.request,self.template_name,{'form':self.form_class,
+            'error':'Invalid credentials'})
+        return super().form_valid(form)
+
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 YOUR_DOMAIN = 'http://127.0.0.1:8000'

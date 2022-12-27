@@ -139,10 +139,57 @@ class EmptyCartView(View):
 
         return redirect('my-cart')
 
+
+class CheckoutView(CreateView):
+    template_name='checkout.html'
+    form_class=CheckoutForm
+    success_url=reverse_lazy('address')
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        cart_id=self.request.session.get('cart_id',None)
+        print('cart-id',cart_id)
+        if cart_id:
+            cart_obj=Cart.objects.get(id=cart_id)
+            print(cart_obj)
+        else:
+            cart_obj=None
+        context['cart']=cart_obj
+        return context
+
+    def form_valid(self,form):
+        cart_id=self.request.session.get('cart_id')
+        if cart_id:
+            cart_obj=Cart.objects.get(id=cart_id)
+            form.instance.cart=cart_obj
+            form.instance.subtotal=cart_obj.total
+            form.instance.discount=0
+            form.instance.total=cart_obj.total
+            form.instance.order_status='Order Received'
+            # del self.request.session['cart_id']
+        else:
+            return redirect('home')
+
+        return super().form_valid(form)
+
+class AddressView(TemplateView):
+    template_name='checkoutaddress.html'
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        cart_id=self.request.session.get('cart_id',None)
+        print('cart-id',cart_id)
+        if cart_id:
+            cart_obj=Cart.objects.get(id=cart_id)
+            print(cart_obj)
+        else:
+            cart_obj=None
+        context['cart']=cart_obj
+        return context
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 YOUR_DOMAIN = 'http://127.0.0.1:8000'
-def checkout_session(request,ct_id):
-    cart=Cart.objects.get(pk=ct_id)
+def checkout_session(request,id):
+    cart=Cart.objects.get(id=id)
     
     session=stripe.checkout.Session.create(
         
@@ -173,99 +220,3 @@ def success(request):
 #  #cancel view
 def cancel(request):
  return render(request,'cancel.html')
- 
-class CheckoutView(CreateView):
-    template_name='checkout.html'
-    form_class=CheckoutForm
-    success_url=reverse_lazy('checkout_session')
-
-    def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        cart_id=self.request.session.get('cart_id',None)
-        print(cart_id)
-        if cart_id:
-            cart_obj=Cart.objects.get(id=cart_id)
-            print(cart_obj)
-        else:
-            cart_obj=None
-        context['cart']=cart_obj
-        return context
-
-    def form_valid(self,form):
-        cart_id=self.request.session.get('cart_id')
-        if cart_id:
-            cart_obj=Cart.objects.get(id=cart_id)
-            form.instance.cart=cart_obj
-            form.instance.subtotal=cart_obj.total
-            form.instance.discount=0
-            form.instance.total=cart_obj.total
-            form.instance.order_status='Order Received'
-            # del self.request.session['cart_id']
-        else:
-            return redirect('home')
-
-        return super().form_valid(form)
-
-# stripe.api_key = settings.STRIPE_SECRET_KEY
-# YOUR_DOMAIN = 'http://127.0.0.1:8000'
-
-# from .models import Order #new
-# @csrf_exempt
-# def create_checkout_session(request):
-#  #Updated- creating Order object
-#  order=Order.objects.all().total_amount()
-#  session = stripe.checkout.Session.create(
-#  client_reference_id=request.user.id if request.user.is_authenticated else None,
-#  payment_method_types=['card'],
-#  line_items=[{
-#  'price_data': {
-#  'currency': 'inr',
-#  'product_data': {
-#  'name': 'Intro to Django Course',
-#  },
-#  'unit_amount': 10000,
-#  },
-#  'quantity': 1,
-#  }],
-#  #Update - passing order ID in checkout to update the order object in webhook
-#  metadata={
-#  "order_id":id
-#  },
-#  mode='payment',
-#  success_url=YOUR_DOMAIN + '/success.html',
-#  cancel_url=YOUR_DOMAIN + '/cancel.html',
-#  )
-#  return JsonResponse({'id': session.id})
-# @csrf_exempt
-# def webhook(request):
-#  print("Webhook")
-#  endpoint_secret = settings.STRIPE_ENDPOINT_SECRET
-#  payload = request.body
-#  sig_header = request.META['HTTP_STRIPE_SIGNATURE']
-#  event = None
-
-#  try:
-#     event = stripe.Webhook.construct_event(
-#     payload, sig_header, endpoint_secret
-#     )
-#  except ValueError as e:
-#  # Invalid payload
-#     return HttpResponse(status=400)
-#  except stripe.error.SignatureVerificationError as e:
-#  # Invalid signature
-#     return HttpResponse(status=400)
-
-#  # Handle the checkout.session.completed event
-#  if event['type'] == 'checkout.session.completed':
-#  #NEW CODE
-#     session = event['data']['object']
-#  #getting information of order from session
-    
-#     price = session["total_amount"]
-#     sessionID = session["id"]
-#  #grabbing id of the order created
-#     ID=session["metadata"]["order_id"]
-#  #Updating order
-#  Order.objects.filter(id=ID).update(paid=True)
-
-#  return HttpResponse(status=200)

@@ -10,6 +10,63 @@ from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View,ListView, TemplateView,CreateView,FormView
 from django.urls import reverse_lazy
+
+class ToolMixin(object):
+    def dispatch(self,request,*args,**kwargs):
+        cart_id=request.session.get('cart_id')
+        if cart_id:
+            cart_obj=Cart.objects.get(id=cart_id)
+            if request.user.is_authenticated and request.user.customer:
+                cart_obj.customer=request.user.customer
+                cart_obj.save()
+        return super().dispatch(request,*args,**kwargs)
+
+
+class CustomerRegisterView(CreateView):
+    template_name='customerregister.html'
+    form_class=CustomerRegisterForm
+    success_url=reverse_lazy('home')
+    def form_valid(self,form):
+        username=form.cleaned_data.get('username')
+        password=form.cleaned_data.get('password')
+        email=form.cleaned_data.get('email')
+        user=User.objects.create_user(username,email,password)
+        form.instance.user=user
+        login(self.request,user)
+        return super().form_valid(form)
+    def get_success_url(self):
+        if "next" in self.request.GET:
+            next_url=self.request.GET.get("next")
+            return next_url
+        else:
+            return self.success_url
+
+class CustomerLogoutView(View):
+    def get(self,request):
+        logout(request)
+        return redirect('home')
+
+class CustomerLoginView(FormView):
+    template_name='login.html'
+    form_class=CustomerLoginForm
+    success_url=reverse_lazy('home')
+    def form_valid(self,form):
+        username=form.cleaned_data.get('username')
+        password=form.cleaned_data.get('password')
+        user=authenticate(username=username,password=password)
+        if user is not None and user.customer:
+            login(self.request,user)
+        else:
+            return render(self.request,self.template_name,{'form':self.form_class,
+            'error':'Invalid credentials'})
+        return super().form_valid(form)
+    def get_success_url(self):
+        if "next" in self.request.GET:
+            next_url=self.request.GET.get("next")
+            return next_url
+        else:
+            return self.success_url
+
 def home(request):
     product=Product.objects.all().order_by("-id")[:5]
     
@@ -17,7 +74,7 @@ def home(request):
         'product':product
     }
     return render(request,'home.html',context)
-
+# @login_required(login_url='my-cart')
 def allProduct(request):
     all_product=Product.objects.all()
     categories=Category.objects.all()
@@ -30,7 +87,7 @@ def allProduct(request):
 def addProduct(request):
     return render(request,'addproduct.html')
 
-class ProductDetailView(TemplateView):
+class ProductDetailView(ToolMixin, TemplateView):
     template_name='pro-detail.html'
 
     def get_context_data(self, **kwargs):
@@ -42,7 +99,7 @@ class ProductDetailView(TemplateView):
         context['product']=product
         return context
 
-class AddToCartView(TemplateView):
+class AddToCartView(ToolMixin, TemplateView):
     template_name='addtocart.html'
     def get_context_data(self, **kwargs) :
         context=super().get_context_data(**kwargs)
@@ -90,7 +147,7 @@ class AddToCartView(TemplateView):
             cart_obj.save()
         return context
 
-class MyCartView(TemplateView):
+class MyCartView(ToolMixin,TemplateView):
     template_name='my-cart.html'
     def get_context_data(self, **kwargs):
         context= super().get_context_data(**kwargs)
@@ -132,7 +189,7 @@ class ManageCartView(View):
             pass
         return redirect('my-cart')
 
-class EmptyCartView(View):
+class EmptyCartView(ToolMixin,View):
     def get(self,request,*args,**kwargs):
         cart_id =request.session.get('cart_id',None)
         if cart_id:
@@ -149,13 +206,22 @@ class CheckoutView(CreateView):
     form_class=CheckoutForm
     success_url=reverse_lazy('address')
 
+    def dispatch(self,request,*args,**kwargs):
+        user=request.user
+        if request.user.is_authenticated and request.user.customer:
+            pass
+        else:
+            return redirect('/register?next=checkout')
+        return super().dispatch(request,*args,**kwargs)
+        
+
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
         cart_id=self.request.session.get('cart_id',None)
-        print('cart-id',cart_id)
+        
         if cart_id:
             cart_obj=Cart.objects.get(id=cart_id)
-            print(cart_obj)
+            
         else:
             cart_obj=None
         context['cart']=cart_obj
@@ -176,7 +242,7 @@ class CheckoutView(CreateView):
 
         return super().form_valid(form)
 
-class AddressView(TemplateView):
+class AddressView(ToolMixin,TemplateView):
     template_name='checkoutaddress.html'
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -197,38 +263,7 @@ def allOrder(request):
     }
     return render(request,'allorder.html',context)
 
-class CustomerRegisterView(CreateView):
-    template_name='customerregister.html'
-    form_class=CustomerRegisterForm
-    success_url=reverse_lazy('home')
-    def form_valid(self,form):
-        username=form.cleaned_data.get('username')
-        password=form.cleaned_data.get('password')
-        email=form.cleaned_data.get('email')
-        user=User.objects.create_user(username,email,password)
-        form.instance.user=user
-        login(self.request,user)
-        return super().form_valid(form)
 
-class CustomerLogoutView(View):
-    def get(self,request):
-        logout(request)
-        return redirect('home')
-
-class CustomerLoginView(FormView):
-    template_name='login.html'
-    form_class=CustomerLoginForm
-    success_url=reverse_lazy('home')
-    def form_valid(self,form):
-        username=form.cleaned_data.get('username')
-        password=form.cleaned_data.get('password')
-        user=authenticate(username=username,password=password)
-        if user is not None and user.customer:
-            login(self.request,user)
-        else:
-            return render(self.request,self.template_name,{'form':self.form_class,
-            'error':'Invalid credentials'})
-        return super().form_valid(form)
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY

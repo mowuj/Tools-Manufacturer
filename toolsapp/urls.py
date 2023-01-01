@@ -20,4 +20,6 @@ urlpatterns = [
     path('register',CustomerRegisterView.as_view(),name='register'),
     path('logout',CustomerLogoutView.as_view(),name='logout'),
     path('login',CustomerLoginView.as_view(),name='login'),
+    path('profile',CustomerProfileView.as_view(),name='profile'),
+    path('profile/order<int:pk>',CustomerOrderDetailView.as_view(),name='customerorderdetail')
 ]

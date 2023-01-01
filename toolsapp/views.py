@@ -8,7 +8,7 @@ import stripe
 from django.conf import settings
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import View,ListView, TemplateView,CreateView,FormView
+from django.views.generic import View,ListView, TemplateView,CreateView,FormView,DetailView
 from django.urls import reverse_lazy
 
 class ToolMixin(object):
@@ -263,7 +263,39 @@ def allOrder(request):
     }
     return render(request,'allorder.html',context)
 
+class CustomerProfileView(TemplateView):
+    template_name='customerprofile.html'
+    def dispatch(self,request,*args,**kwargs):
+        user=request.user
+        if request.user.is_authenticated and request.user.customer:
+            pass
+        else:
+            return redirect('/register?next=profile')
+        return super().dispatch(request,*args,**kwargs)
+        
 
+    def get_context_data(self, **kwargs):
+        context= super().get_context_data(**kwargs)
+        customer=self.request.user.customer
+        context['customer']=customer
+        orders=Order.objects.filter(cart__customer=customer).order_by("-id")
+        context['orders']=orders
+        return context
+
+class CustomerOrderDetailView(DetailView):
+    template_name='customerorderdetail.html'
+    model=Order
+    context_object_name="ord_obj"
+    def dispatch(self,request,*args,**kwargs):
+        user=request.user
+        if request.user.is_authenticated and request.user.customer:
+            order_id=self.kwargs["pk"]
+            order=Order.objects.get(id=order_id)
+            if request.user.customer != order.cart.customer:
+                return redirect('/profile')
+        else:
+            return redirect('/register?next=profile')
+        return super().dispatch(request,*args,**kwargs)
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY

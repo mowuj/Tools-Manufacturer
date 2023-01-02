@@ -396,3 +396,8 @@ class OrderStatusChangeView(AdminRequiredMixin,View):
         order_obj.order_status=new_status
         order_obj.save()
         return redirect(reverse_lazy('adminorderdetail',kwargs={"pk":order_id}))
+
+class AdminLogoutView(View):
+    def get(self,request):
+        logout(request)
+        return redirect('adminlogin')

@@ -22,6 +22,7 @@ urlpatterns = [
     path('profile',CustomerProfileView.as_view(),name='profile'),
     path('profile/order<int:pk>',CustomerOrderDetailView.as_view(),name='customerorderdetail'),
     path('adminlogin',AdminLoginView.as_view(),name='adminlogin'),
+    path('adminlogout',AdminLogoutView.as_view(),name='adminlogout'),
     path('adminhome',AdminHomeView.as_view(),name='adminhome'),
     path('adminorder/<int:pk>',AdminOrderDetailView.as_view(),name='adminorderdetail'),
     path('adminallorders',AdminOrderListView.as_view(),name='adminorderlist'),

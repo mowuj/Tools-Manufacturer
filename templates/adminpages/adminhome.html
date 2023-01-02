@@ -15,7 +15,6 @@
                     <th>SN</th>
                     <th>Order Id</th>
                     <th>Customer</th>
-                    
                     <th>Ordered On</th>
                     <th>Amount</th>
                     
@@ -25,7 +24,7 @@
                 {% for order in pendingorders %}
                 <tr>
                     <td>{{forloop.counter}}</td>
-                    <td><a href="">#ORDER_{{order.id}}</a></td>
+                    <td><a href="{% url 'adminorderdetail' order.id%}">#ORDER_{{order.id}}</a></td>
                     <td>{{order.ordered_by}}</td>                   
                     <td>{{order.created_at}}</td>
                     <td>{{order.total}}</td>

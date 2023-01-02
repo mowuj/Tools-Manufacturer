@@ -25,4 +25,5 @@ urlpatterns = [
     path('adminlogin',AdminLoginView.as_view(),name='adminlogin'),
     path('adminhome',AdminHomeView.as_view(),name='adminhome'),
     path('adminorder/<int:pk>',AdminOrderDetailView.as_view(),name='adminorderdetail'),
+    path('adminallorders',AdminOrderListView.as_view(),name='adminorderlist'),
 ]

@@ -8,7 +8,7 @@ import stripe
 from django.conf import settings
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import View,ListView, TemplateView,CreateView,FormView,DetailView
+from django.views.generic import View,ListView, TemplateView,CreateView,FormView,DetailView,ListView
 from django.urls import reverse_lazy
 
 class ToolMixin(object):
@@ -353,9 +353,7 @@ class AdminLoginView(FormView):
             'error':'Invalid credentials'})
         return super().form_valid(form)
 
-class AdminHomeView(TemplateView):
-    template_name='adminpages/adminhome.html'
-
+class AdminRequiredMixin(object):
     def dispatch(self,request,*args,**kwargs):
         user=request.user
         if request.user.is_authenticated and Admin.objects.filter(user=user).exists():
@@ -363,9 +361,24 @@ class AdminHomeView(TemplateView):
         else:
             return redirect('/adminlogin')
         return super().dispatch(request,*args,**kwargs)
+
+
+class AdminHomeView(AdminRequiredMixin,TemplateView):
+    template_name='adminpages/adminhome.html'
+
     def get_context_data(self,**kwargs):
         context=super().get_context_data(**kwargs)
-        context["pendingorders"]=Order.objects.filter(order_status="Order Received")
+        context["pendingorders"]=Order.objects.filter(
+            order_status="Order Received").order_by("-id")
 
         return context
-        
+
+class AdminOrderDetailView(AdminRequiredMixin,DetailView):
+    template_name="adminpages/adminorderdetail.html"
+    model=Order
+    context_object_name="ord_obj"
+
+class AdminOrderListView(AdminRequiredMixin,ListView):
+    template_name="adminpages/adminorderlist.html"
+    queryset=Order.objects.all().order_by("-id")
+    context_object_name="allorders"

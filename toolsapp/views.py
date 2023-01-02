@@ -54,7 +54,7 @@ class CustomerLoginView(FormView):
         username=form.cleaned_data.get('username')
         password=form.cleaned_data.get('password')
         user=authenticate(username=username,password=password)
-        if user is not None and user.customer:
+        if user is not None and Customer.objects.filter(user=user).exists():
             login(self.request,user)
         else:
             return render(self.request,self.template_name,{'form':self.form_class,
@@ -145,6 +145,7 @@ class AddToCartView(ToolMixin, TemplateView):
                     )
             cart_obj.total +=product_obj.sell_price
             cart_obj.save()
+            
         return context
 
 class MyCartView(ToolMixin,TemplateView):
@@ -267,7 +268,7 @@ class CustomerProfileView(TemplateView):
     template_name='customerprofile.html'
     def dispatch(self,request,*args,**kwargs):
         user=request.user
-        if request.user.is_authenticated and request.user.customer:
+        if request.user.is_authenticated and Customer.objects.filter(user=user).exists():
             pass
         else:
             return redirect('/register?next=profile')
@@ -288,7 +289,7 @@ class CustomerOrderDetailView(DetailView):
     context_object_name="ord_obj"
     def dispatch(self,request,*args,**kwargs):
         user=request.user
-        if request.user.is_authenticated and request.user.customer:
+        if request.user.is_authenticated and Customer.objects.filter(user=user).exists():
             order_id=self.kwargs["pk"]
             order=Order.objects.get(id=order_id)
             if request.user.customer != order.cart.customer:
@@ -333,3 +334,38 @@ def success(request):
 #  #cancel view
 def cancel(request):
  return render(request,'cancel.html')
+
+# admin 
+
+class AdminLoginView(FormView):
+    template_name='adminpages/adminlogin.html'
+    form_class=CustomerLoginForm
+    success_url=reverse_lazy('adminhome')
+
+    def form_valid(self,form):
+        username=form.cleaned_data.get('username')
+        password=form.cleaned_data.get('password')
+        user=authenticate(username=username,password=password)
+        if user is not None and Admin.objects.filter(user=user).exists():
+            login(self.request,user)
+        else:
+            return render(self.request,self.template_name,{'form':self.form_class,
+            'error':'Invalid credentials'})
+        return super().form_valid(form)
+
+class AdminHomeView(TemplateView):
+    template_name='adminpages/adminhome.html'
+
+    def dispatch(self,request,*args,**kwargs):
+        user=request.user
+        if request.user.is_authenticated and Admin.objects.filter(user=user).exists():
+            pass
+        else:
+            return redirect('/adminlogin')
+        return super().dispatch(request,*args,**kwargs)
+    def get_context_data(self,**kwargs):
+        context=super().get_context_data(**kwargs)
+        context["pendingorders"]=Order.objects.filter(order_status="Order Received")
+
+        return context
+        

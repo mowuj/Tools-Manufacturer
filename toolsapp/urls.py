@@ -21,5 +21,8 @@ urlpatterns = [
     path('logout',CustomerLogoutView.as_view(),name='logout'),
     path('login',CustomerLoginView.as_view(),name='login'),
     path('profile',CustomerProfileView.as_view(),name='profile'),
-    path('profile/order<int:pk>',CustomerOrderDetailView.as_view(),name='customerorderdetail')
+    path('profile/order<int:pk>',CustomerOrderDetailView.as_view(),name='customerorderdetail'),
+    path('adminlogin',AdminLoginView.as_view(),name='adminlogin'),
+    path('adminhome',AdminHomeView.as_view(),name='adminhome'),
+    path('adminorder/<int:pk>',AdminOrderDetailView.as_view(),name='adminorderdetail'),
 ]

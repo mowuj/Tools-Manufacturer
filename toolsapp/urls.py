@@ -2,8 +2,8 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('',home,name='home'),
-    path('product',allProduct,name='product'),
+    path('',HomeView.as_view(),name='home'),
+    path('product',AllProductView.as_view(),name='product'),
     path('addproduct',addProduct,name='addproduct'),
     path('productdetail/<slug:slug>/',ProductDetailView.as_view(),name='productdetail'),
     path('add-to-cart/<int:id>',AddToCartView.as_view(),name='addtocart'),
@@ -16,6 +16,7 @@ urlpatterns = [
     path('success', success,name='success'),
     path('cancel.html/',cancel,name='cancel'),
     path('allorder',allOrder,name='allorder'),
+    path('search/',SearchView.as_view(),name="search"),
     path('register',CustomerRegisterView.as_view(),name='register'),
     path('logout',CustomerLogoutView.as_view(),name='logout'),
     path('login',CustomerLoginView.as_view(),name='login'),
@@ -26,5 +27,6 @@ urlpatterns = [
     path('adminhome',AdminHomeView.as_view(),name='adminhome'),
     path('adminorder/<int:pk>',AdminOrderDetailView.as_view(),name='adminorderdetail'),
     path('adminallorders',AdminOrderListView.as_view(),name='adminorderlist'),
-    path("admin-order-<int:pk>-change/",OrderStatusChangeView.as_view(),name="orderstatuschange")
+    path("admin-order-<int:pk>-change/",OrderStatusChangeView.as_view(),name="orderstatuschange"),
+
 ]

@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate,login,logout
 from .models import *
 from .forms import *
 from django.db.models import Sum
+from django.db.models import Q
 import stripe
 from django.conf import settings
 from django.http import JsonResponse,HttpResponse
@@ -16,7 +17,7 @@ class ToolMixin(object):
         cart_id=request.session.get('cart_id')
         if cart_id:
             cart_obj=Cart.objects.get(id=cart_id)
-            if request.user.is_authenticated and request.user.customer:
+            if request.user.is_authenticated and Customer.objects.filter(user=request.user).exists():
                 cart_obj.customer=request.user.customer
                 cart_obj.save()
         return super().dispatch(request,*args,**kwargs)
@@ -67,22 +68,22 @@ class CustomerLoginView(FormView):
         else:
             return self.success_url
 
-def home(request):
-    product=Product.objects.all().order_by("-id")[:5]
-    
-    context={
-        'product':product
-    }
-    return render(request,'home.html',context)
-# @login_required(login_url='my-cart')
-def allProduct(request):
-    all_product=Product.objects.all()
-    categories=Category.objects.all()
-    context={
-        'all_product':all_product,
-        'categories':categories
-    }
-    return render(request,'products.html',context)
+
+class HomeView(TemplateView):
+    template_name='home.html'
+    def get_context_data(self,**kwargs):
+        context=super().get_context_data(**kwargs)
+        context['product']=Product.objects.all().order_by("-id")[:5]
+        return context
+
+class AllProductView(TemplateView):
+    template_name='products.html'
+    def get_context_data(self,**kwargs):
+        context=super().get_context_data(**kwargs)
+        context['all_product']=Product.objects.all()
+        context['categories']=Category.objects.all()
+        return context
+
 
 def addProduct(request):
     return render(request,'addproduct.html')
@@ -101,6 +102,7 @@ class ProductDetailView(ToolMixin, TemplateView):
 
 class AddToCartView(ToolMixin, TemplateView):
     template_name='addtocart.html'
+    success_url=reverse_lazy('product ')
     def get_context_data(self, **kwargs) :
         context=super().get_context_data(**kwargs)
         # get url id 
@@ -334,6 +336,22 @@ def success(request):
 #  #cancel view
 def cancel(request):
  return render(request,'cancel.html')
+
+class SearchView(TemplateView):
+    template_name="search.html"
+
+    def get_context_data(self,**kwargs):
+        context=super().get_context_data(**kwargs)
+        # kw=self.request.GET["keyword"]
+        kw=self.request.GET.get("keyword")
+        results=Product.objects.filter(
+            Q(title__icontains=kw) | 
+            Q(description__icontains=kw) | 
+            Q(category__title__icontains=kw) | 
+            Q(warranty__icontains=kw))
+        print(results)
+        context["results"]=results
+        return context
 
 # admin 
 

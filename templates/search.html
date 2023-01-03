@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Search Results for..  <span class="text-info"><u> <i>"{{request.GET.keyword}}"</i></u></span> </h3>
+            <hr>
+            {% for i in results %}
+              <div class="row">
+                <div class="col-md-4">
+                    <img src="{{i.image.url}}" class="img-fluid" alt="">
+                </div>
+                <div class="col-md-8">
+                    <h4><a href="{% url 'productdetail' i.slug %}">{{i.title}}</a></h4>
+                    <p>{{i.description|truncatewords:50}}</p>
+                    <p>Warranty: {{i.warranty}}</p>
+                    <p>Return Policy: {{i.return_policy}}</p>
+                    <a href="{% url 'addtocart' i.id %}" class="btn " style="background-color:#FF589B" type="submit">Add to Cart</a>
+
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+    </div>
+  </div>
+{% endblock body %}

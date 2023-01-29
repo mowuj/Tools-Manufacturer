@@ -23,6 +23,7 @@ class CheckoutForm(ModelForm):
             'shipping_address',
             'phone',
             'email',
+            'payment_method'
             
         ]
 

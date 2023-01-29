@@ -10,8 +10,9 @@ from django.conf import settings
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View,ListView, TemplateView,CreateView,FormView,DetailView,ListView
-from django.urls import reverse_lazy
-
+from django.urls import reverse_lazy,reverse
+def slider(request):
+    return render(request,'slider.html')
 class ToolMixin(object):
     def dispatch(self,request,*args,**kwargs):
         cart_id=request.session.get('cart_id')
@@ -73,7 +74,7 @@ class HomeView(TemplateView):
     template_name='home.html'
     def get_context_data(self,**kwargs):
         context=super().get_context_data(**kwargs)
-        context['product']=Product.objects.all().order_by("-id")[:5]
+        context['product']=Product.objects.all().order_by("-id")
         return context
 
 class AllProductView(TemplateView):
@@ -211,7 +212,7 @@ class CheckoutView(CreateView):
 
     def dispatch(self,request,*args,**kwargs):
         user=request.user
-        if request.user.is_authenticated and request.user.customer:
+        if request.user.is_authenticated and Customer.objects.filter(user=user).exists():
             pass
         else:
             return redirect('/register?next=checkout')
@@ -239,25 +240,32 @@ class CheckoutView(CreateView):
             form.instance.discount=0
             form.instance.total=cart_obj.total
             form.instance.order_status='Order Received'
+            
+            pm=form.cleaned_data.get("payment_method")
+            order=form.save()
+            if pm=="Stripe":
+                return redirect(reverse("checkout_session",kwargs={"pk":cart_id}))
+            else:
+                return redirect('home')
             # del self.request.session['cart_id']
         else:
             return redirect('home')
 
         return super().form_valid(form)
 
-class AddressView(ToolMixin,TemplateView):
-    template_name='checkoutaddress.html'
-    def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        cart_id=self.request.session.get('cart_id',None)
-        print('cart-id',cart_id)
-        if cart_id:
-            cart_obj=Cart.objects.get(id=cart_id)
-            print(cart_obj)
-        else:
-            cart_obj=None
-        context['cart']=cart_obj
-        return context
+# class AddressView(ToolMixin,TemplateView):
+#     template_name='checkoutaddress.html'
+#     def get_context_data(self, **kwargs):
+#         context=super().get_context_data(**kwargs)
+#         cart_id=self.request.session.get('cart_id',None)
+#         print('cart-id',cart_id)
+#         if cart_id:
+#             cart_obj=Cart.objects.get(id=cart_id)
+#             print(cart_obj)
+#         else:
+#             cart_obj=None
+#         context['cart']=cart_obj
+#         return context
 
 def allOrder(request):
     cart=Cart.objects.all()
@@ -303,9 +311,9 @@ class CustomerOrderDetailView(DetailView):
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 YOUR_DOMAIN = 'http://127.0.0.1:8000'
-def checkout_session(request,id):
-    cart=Cart.objects.get(id=id)
-    
+def checkout_session(request,pk):
+    cart=Cart.objects.get(id=pk)
+    # order_obj=Order.objects.get(id=pk)
     session=stripe.checkout.Session.create(
         
         payment_method_types=['card'],
@@ -326,6 +334,8 @@ def checkout_session(request,id):
         success_url=YOUR_DOMAIN + '/success',
         cancel_url=YOUR_DOMAIN + '/cancel.html',
     )
+    cart.order.payment_completed=True
+    cart.order.save()
     del request.session['cart_id']
     return redirect (session.url,code=3)
 

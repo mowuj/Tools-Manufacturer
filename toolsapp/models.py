@@ -63,6 +63,10 @@ ORDER_STATUS=(
     ("Order Completed","Order Completed"),
     ("Order Canceled","Canceled"),
 )
+METHOD=(
+    ("Cash On Delivery","Cash On Delivery"),
+    ("Stripe","Stripe")
+)
 class Order(models.Model):
     cart=models.OneToOneField(Cart, on_delete=models.CASCADE)
     ordered_by= models.CharField(max_length = 250)
@@ -74,6 +78,8 @@ class Order(models.Model):
     total=models.PositiveIntegerField()
     order_status=models.CharField(max_length = 250,choices=ORDER_STATUS)
     created_at=models.DateTimeField(auto_now_add=True)
+    payment_method=models.CharField(max_length = 20,choices=METHOD,default="Cash On Delivery")
+    payment_completed=models.BooleanField(default=False,null=True,blank=True)
 
     def __str__(self):
         return "Order: " + str(self.id)

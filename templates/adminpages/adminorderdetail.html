@@ -15,6 +15,7 @@ Order Detail
             <p><span class="font-weight-bold">Customer Info: </span>{{ord_obj.ordered_by}}, Mob:{{ord_obj.phone}},
                 Email:({{ord_obj.email}})</p>
             <p><span class="font-weight-bold">Shipping Address: </span>{{ord_obj.shipping_address}}</p>
+            <p><span class="font-weight-bold">Payment Information: </span> Using {{ord_obj.payment_method}} ( {% if ord_obj.payment_completed %}Payment Completed {% else %} Not Paid{% endif %} )</p>
             <h4>Ordered Items</h4>
             <table class="table">
                 <thead>

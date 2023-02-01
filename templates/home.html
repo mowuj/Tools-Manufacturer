@@ -96,9 +96,11 @@
                         <div class="d-flex justify-content-center align-items-center mb-4">
                             <img src="{{i.image.url}}" class="img-fluid" style="height:2500;object-fit:cover;"  alt="">
                         </div>
-                        <h5 class="mb-0"><b><a href="{% url 'productdetail' i.slug %}">{{i.title}}</a></b></h5>
-                        <p class="card-title">Price: <del style="color:red">{{i.marked_price}}</del> TK.{{i.sell_price}}</p>
-                        <a href="{% url 'addtocart' i.id %}" class="btn " style="background-color:#FF589B" type="submit">Add to Cart</a>
+                        <div >
+                            <h5 class="mb-0"><b><a href="{% url 'productdetail' i.slug %}">{{i.title}}</a></b></h5>
+                            <p class="card-title">Price: <del style="color:red">{{i.marked_price}}</del> TK.{{i.sell_price}}</p>
+                            <a href="{% url 'addtocart' i.id %}" class="btn " style="background-color:#FF589B" type="submit">Add to Cart</a>
+                        </div>
                     </div>
                     {% endfor %}
 

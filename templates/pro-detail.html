@@ -7,6 +7,17 @@
         <div class="row">
                     <div class="col-lg-5 ">
                         <img src="{{product.image.url}}" class="d-block w-100" alt="..." style="height: 30rem">
+                        <div class="row">
+                            <h5>More Images</h5>
+                            {% for pimg in product.productimage_set.all %}
+                            <div class="col-md-4 p-3">
+                                <a href="{{pimg.image.url}}" target="_blank">
+                                <img src="{{pimg.image.url}}" class="img-fluid" alt="" style="height: 100px;object-fit:contain">
+                                </a>
+                            </div>
+                              
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="col-lg-7 mt-5">
                         <h3>{{product.title}} (Viewed {{product.view_count}} times)</h3>

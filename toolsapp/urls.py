@@ -29,5 +29,7 @@ urlpatterns = [
     path('adminorder/<int:pk>',AdminOrderDetailView.as_view(),name='adminorderdetail'),
     path('adminallorders',AdminOrderListView.as_view(),name='adminorderlist'),
     path("admin-order-<int:pk>-change/",OrderStatusChangeView.as_view(),name="orderstatuschange"),
+    path('admin-product/list/',AdminProductListView.as_view(),name='adminproductlist'),
+    path("admin-product/add/",AdminProductAddView.as_view(),name="adminproductadd")
 
 ]

@@ -429,3 +429,20 @@ class AdminLogoutView(View):
     def get(self,request):
         logout(request)
         return redirect('adminlogin')
+    
+class AdminProductListView(AdminRequiredMixin,ListView):
+    template_name="adminpages/adminproductlist.html"
+    queryset=Product.objects.all().order_by("-id")
+    context_object_name="allproducts"
+
+class AdminProductAddView(AdminRequiredMixin,CreateView):
+    template_name="adminpages/adminproductadd.html"
+    form_class=ProductForm
+    success_url=reverse_lazy('adminproductlist')
+
+    def form_valid(self,form):
+        pro=form.save()
+        images=self.request.FILES.getlist("more_image")
+        for i in images:
+            ProductImage.objects.create(product=pro,image=i)
+        return super().form_valid(form)

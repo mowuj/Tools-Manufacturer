@@ -50,3 +50,59 @@ class CustomerLoginForm(forms.Form):
     password=forms.CharField(widget=forms.PasswordInput())
 
 # class AdminLoginForm()
+
+class ProductForm(ModelForm):
+    more_image=forms.FileField(required=False,widget=forms.FileInput(attrs={
+        "class":"form-control",
+        "multiple":True
+    }))
+    class Meta:
+        model=Product
+        fields=[
+            "title",
+            "slug",
+            "category",
+            "image",
+            "marked_price",
+            "sell_price",
+            "description",
+            "warranty",
+            "return_policy"
+        ]
+        widgets = {
+            "title":forms.TextInput(attrs={
+            "class":"form-control",
+            "placeholder":"Enter Product Title"
+            }),
+            "slug":forms.TextInput(attrs={
+            "class":"form-control",
+            "placeholder":"Enter Product Unique slug"
+            }),
+            "category":forms.Select(attrs={
+            "class":"form-control"
+            }),
+            "image":forms.ClearableFileInput(attrs={
+            "class":"form-control"
+            }),
+            "marked_price":forms.NumberInput(attrs={
+            "class":"form-control",
+            "placeholder":"Enter Marked Price of this Product"
+            }),
+            "sell_price":forms.NumberInput(attrs={
+            "class":"form-control",
+            "placeholder":"Enter Selling Price of this Product"
+            }),
+            "description":forms.Textarea(attrs={
+            "class":"form-control",
+            "placeholder":"Description of this Product",
+            "rows":4
+            }),
+            "warranty":forms.TextInput(attrs={
+            "class":"form-control",
+            "placeholder":"Enter Product Warranty"
+            }),
+            "return_policy":forms.TextInput(attrs={
+            "class":"form-control",
+            "placeholder":"Enter Product Return_policy"
+            }),
+        }

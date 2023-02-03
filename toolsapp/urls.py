@@ -23,6 +23,10 @@ urlpatterns = [
     path('login',CustomerLoginView.as_view(),name='login'),
     path('profile',CustomerProfileView.as_view(),name='profile'),
     path('profile/order<int:pk>',CustomerOrderDetailView.as_view(),name='customerorderdetail'),
+    path("forgot-password/",ForgotPasswordView.as_view(),name="forgotpassword"),
+    path("password-reset/<email>/<token>/",PasswordResetView.as_view(),name="passwordreset"),
+
+    # Admin Side 
     path('adminlogin',AdminLoginView.as_view(),name='adminlogin'),
     path('adminlogout',AdminLogoutView.as_view(),name='adminlogout'),
     path('adminhome',AdminHomeView.as_view(),name='adminhome'),

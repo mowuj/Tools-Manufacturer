@@ -106,3 +106,38 @@ class ProductForm(ModelForm):
             "placeholder":"Enter Product Return_policy"
             }),
         }
+
+class ForgotPasswordForm(forms.Form):
+    email=forms.CharField(widget=forms.EmailInput(attrs={
+        "class":"form-control",
+        "placeholder":"Enter your email.."
+    }))
+
+    def clean_email(self):
+        e=self.cleaned_data.get("email")
+        if Customer.objects.filter(user__email=e).exists():
+            pass
+        else:
+            raise forms.ValidationError("Customer with this email does not exists..")
+        return e
+    
+class PasswordResetForm(forms.Form):
+    new_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class':'form-control',
+        'autocomplete':'new-password',
+        'placeholder':"Enter New Password",
+    }), label="New Password")
+    confirm_new_password=forms.CharField(widget=forms.PasswordInput(attrs={
+        'class':'form-control',
+        'autocomplete':'new-password',
+        'placeholder':"Confirm New Password",
+    }), label="Confirm New Password")
+
+    def clean_confirm_new_password(self):
+        new_password=self.cleaned_data.get("new_password")
+        confirm_new_password=self.cleaned_data.get("confirm_new_password")
+        if new_password != confirm_new_password:
+            raise forms.ValidationError(
+                "New Password did not match"
+            )
+        return confirm_new_password

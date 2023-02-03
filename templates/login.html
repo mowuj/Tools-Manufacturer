@@ -15,6 +15,7 @@
                 {{ form|crispy}}
                 <button class="btn btn-primary mt-2">Login as Customer</button>
             </form>
+            <p>Forgot Password? <a href="{% url 'forgotpassword' %}">Reset Now</a> </p>
             <p>Don't have a account? <a href="{% url 'register' %} {% if request.GET.next %}?next={{request.GET.next}}{% endif %}">Register First</a></p>
         </div>
     </div>

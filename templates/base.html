@@ -20,9 +20,9 @@
     
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar bg-primary px-5 " >
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand text-white" href="#">Tools Manufacturer</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -30,50 +30,69 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link active text-white" aria-current="page" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'product' %}">Our Products</a>
+                        <a class="nav-link active text-white" href="{% url 'product' %}">Our Products</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  
+                    <li class="nav-item">
+                        <a class="nav-link active text-white" href="{% url 'my-cart' %}">Cart</a>
+                    </li>
+                    <li class="nav-item active dropdown ">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Dashboard
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'allorder' %}">All Orders</a></li>
-                            <li><a class="dropdown-item" href="#">Add New</a></li>
+                            <li><a class="dropdown-item" href="{% url 'home' %}">Customer Dashboard</a></li>
+                            <li><a class="dropdown-item" href="{% url 'adminlogin' %}">Admin Dashboard</a></li>
+                           
+                            
+                        </ul>
+
+                    <li class="nav-item " style="margin-left:70px">
+<form class="d-flex" role="search" action="{% url 'search' %}" method="GET">
+    <input class="form-control me-2" type="text" name="keyword" placeholder="Search" aria-label="Search" required>
+    <button class="btn btn-warning " type="submit">Search</button>
+</form>
+                    </li>
+                    {% if request.user.customer %}
+                    <li class="nav-item me-auto" style="margin-left:50px">
+                        <a class="nav-link active text-white" href="">Welcome {{request.user.username}}</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item dropdown " style="margin-left:100px">
+                        <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user text-white"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            
+                            {% if request.user.customer %}
+                            
                             <li>
-                                <hr class="dropdown-divider">
+                                <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
                             </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            </li>
+                            {% else %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'register' %}">Registration</a>
+                            </li>
+                            {% endif %}
+                            
+                            
                             
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'my-cart' %}">Cart</a>
-                    </li>
-                    {% if request.user.customer %}
-                    <li class="nav-item">
-                        <a class="nav-link active" href="">Welcome {{request.user.username}}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'profile' %}">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'logout' %}">Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'login' %}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'register' %}">Registration</a>
-                    </li>
-                    {% endif %}
+                    
                 </ul>
-                <form class="d-flex" role="search" action="{% url 'search' %}" method="GET">
-                    <input class="form-control me-2" type="text" name="keyword" placeholder="Search" aria-label="Search" required>
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                
+                
+                
             </div>
         </div>
 
@@ -100,7 +119,7 @@
     -->
     <div class=" my-5">
         <!-- Footer -->
-        <footer class="text-center text-lg-start text-white" style="background-color: #45526e">
+        <footer class="text-center text-lg-start text-white sticky-bottom" style="background-color: #45526e">
             <!-- Grid container -->
             <div class="container p-4 pb-0">
                 <!-- Section: Links -->
@@ -110,12 +129,10 @@
                         <!-- Grid column -->
                         <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
                             <h6 class="text-uppercase mb-4 font-weight-bold">
-                                Company name
+                                Tools Manufacturer
                             </h6>
                             <p>
-                                Here you can use rows and columns to organize your footer
-                                content. Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit.
+                                Tools Manufacturer is a multinational company.Customer service is our main concern.Our team work hard for customer service
                             </p>
                         </div>
                         <!-- Grid column -->
@@ -126,16 +143,16 @@
                         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
                             <h6 class="text-uppercase mb-4 font-weight-bold">Products</h6>
                             <p>
-                                <a class="text-white">MDBootstrap</a>
+                                <a class="text-white">Electronic Items</a>
                             </p>
                             <p>
-                                <a class="text-white">MDWordPress</a>
+                                <a class="text-white">Printing Items</a>
                             </p>
                             <p>
-                                <a class="text-white">BrandFlow</a>
+                                <a class="text-white">Building Items</a>
                             </p>
                             <p>
-                                <a class="text-white">Bootstrap Angular</a>
+                                <a class="text-white">Carpenter Items</a>
                             </p>
                         </div>
                         <!-- Grid column -->
@@ -167,10 +184,10 @@
                         <!-- Grid column -->
                         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
                             <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
-                            <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
-                            <p><i class="fas fa-envelope mr-3"></i> info@gmail.com</p>
-                            <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
-                            <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
+                            <p><i class="fas fa-home mr-3"></i> Khilkhet,Dhaka,Bangladesh</p>
+                            <p><i class="fas fa-envelope mr-3"></i> mowuj@gmail.com</p>
+                            <p><i class="fas fa-phone mr-3"></i> +880-1311054020</p>
+                            <p><i class="fas fa-print mr-3"></i> +880-1939141710</p>
                         </div>
                         <!-- Grid column -->
                     </div>
@@ -188,7 +205,7 @@
                             <!-- Copyright -->
                             <div class="p-3">
                                 © 2020 Copyright:
-                                <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+                                <a class="text-white" href="https://mdbootstrap.com/">Md Ahsan Habib</a>
                             </div>
                             <!-- Copyright -->
                         </div>

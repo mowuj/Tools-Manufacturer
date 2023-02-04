@@ -23,7 +23,7 @@
                         <h3>{{product.title}} (Viewed {{product.view_count}} times)</h3>
                         <h5>Category: {{product.category}}</h5>
                         <h5>Price: <del style="color:red">{{product.marked_price}}</del> TK.{{product.sell_price}}</h5>
-                        <a href="{% url 'addtocart' product.id %}" class="btn " style="background-color:#FF589B" type="submit">Add to Cart</a>
+                        <a href="{% url 'addtocart' product.id %}" class="btn btn-primary"  type="submit">Add to Cart</a>
                         <hr>
                         <p class="text-info">Warranty: {{product.warranty}}</p>
                         <p class="text-info">Return Policy: {{product.return_policy}}</p>

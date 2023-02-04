@@ -1,23 +1,33 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block body %}
 {% load crispy_forms_tags %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-6 mx-auto">
-            <h3>Customer Login</h3>
-            <hr>
-            <form action="" method="POST">
-                {% if error %}
-                  <p style="color:red">{{error}}</p>
-                {% endif %}
-                {% csrf_token %}
-                {{ form|crispy}}
-                <button class="btn btn-primary mt-2">Login as Customer</button>
-            </form>
-            <p>Forgot Password? <a href="{% url 'forgotpassword' %}">Reset Now</a> </p>
-            <p>Don't have a account? <a href="{% url 'register' %} {% if request.GET.next %}?next={{request.GET.next}}{% endif %}">Register First</a></p>
+    <div class="row mx-auto">
+        <h3 class="text-center my-3">Customer Login</h3>
+        <hr>
+        <div class="row panda-background bg-gradient rounded border p-5 d-flex align-items-center">
+            <div class="col-md-6">
+            
+                <form action="" method="POST">
+                    {% if error %}
+                    <p style="color:red">{{error}}</p>
+                    {% endif %}
+                    {% csrf_token %}
+                    {{ form|crispy}}
+                    <button class="btn btn-primary my-3">Login as Customer</button>
+                </form>
+                <p>Forgot Password? <a href="{% url 'forgotpassword' %}">Reset Now</a> </p>
+                <p>Don't have a account? <a
+                        href="{% url 'register' %} {% if request.GET.next %}?next={{request.GET.next}}{% endif %}">Register
+                        First</a></p>
+            </div>
+            <div class="col-lg-5">
+                <img src="{% static 'images/banner4.jpg' %}" class="img-thumbnail" alt="..." style="">
+            </div>
+        
         </div>
+
     </div>
 </div>
 {% endblock body %}

@@ -18,12 +18,25 @@
             <div class="carousel-item active">
                 <div class="row panda-background bg-gradient rounded border p-5 d-flex align-items-center">
                     <div class="col-lg-7">
-                        <h1>Cool Dude Headphone</h1>
-                        <p>This is the best headphone in the world for people who just want to waste time in front of
-                            funky world.</p>
-                        <h1>$420</h1>
-                        <button class="btn" style="background-color:#FF589B">Buy Now</button>
-
+                        <h1>Our Mission</h1>
+                        <p>Provide best customer service is our main mission.So our team wark hard for support you.Contact us</p>
+                        <div class="col-md-5 col-lg-5 ml-lg-0 text-center text-md-end">
+                            <!-- Facebook -->
+                            <a class="btn btn-outline-dark btn-floating m-1" class="text-dark" role="button"><i <i
+                                    class="fa-brands fa-facebook"></i></i></a>
+                        
+                            <!-- Twitter -->
+                            <a class="btn btn-outline-dark btn-floating m-1" class="text-dark" role="button"><i
+                                    class="fab fa-twitter"></i></a>
+                        
+                            <!-- Google -->
+                            <a class="btn btn-outline-dark btn-floating m-1" class="text-dark" role="button"><i class="fab fa-google"></i></a>
+                        
+                            <!-- Instagram -->
+                            <a class="btn btn-outline-dark btn-floating m-1" class="text-dark" role="button"><i
+                                    class="fab fa-instagram"></i></a>
+                        </div>
+                        
                     </div>
                     <div class="col-lg-5">
                         <img src="{% static 'images/banner4.jpg' %}" class="d-block w-100" alt="..."
@@ -36,11 +49,25 @@
             <div class="carousel-item">
                 <div class="row panda-background bg-gradient rounded border p-5 d-flex align-items-center">
                     <div class="col-lg-7">
-                        <h1>Cool Dude Headphone</h1>
-                        <p>This is the best headphone in the world for people who just want to waste time in front of
-                            funky world.</p>
-                        <h1>$420</h1>
-                        <button class="btn " style="background-color:#FF589B">Buy Now</button>
+                        <h1>Our Vision</h1>
+                        <p>Be a best Manufacturer company is our vision.Our target in this year is 20M customer</p>
+                        <div class="col-md-5 col-lg-5 ml-lg-0 text-center text-md-end">
+                            <!-- Facebook -->
+                            <a class="btn btn-outline-dark btn-floating m-1" class="text-dark" role="button"><i <i
+                                    class="fa-brands fa-facebook"></i></i></a>
+                        
+                            <!-- Twitter -->
+                            <a class="btn btn-outline-dark btn-floating m-1" class="text-dark" role="button"><i
+                                    class="fab fa-twitter"></i></a>
+                        
+                            <!-- Google -->
+                            <a class="btn btn-outline-dark btn-floating m-1" class="text-dark" role="button"><i class="fab fa-google"></i></a>
+                        
+                            <!-- Instagram -->
+                            <a class="btn btn-outline-dark btn-floating m-1" class="text-dark" role="button"><i
+                                    class="fab fa-instagram"></i></a>
+                        </div>
+                        
 
                     </div>
                     <div class="col-lg-5">
@@ -53,11 +80,25 @@
             <div class="carousel-item">
                 <div class="row panda-background bg-gradient rounded border p-5 d-flex align-items-center">
                     <div class="col-lg-7">
-                        <h1>Cool Dude Headphone</h1>
-                        <p>This is the best headphone in the world for people who just want to waste time in front of
-                            funky world.</p>
-                        <h1>$420</h1>
-                        <button class="btn " style="background-color:#FF589B">Buy Now</button>
+                        <h1>Our Achieve</h1>
+                        <p>10m user is our Achieve.And the review of this customer is very good.</p>
+                        <div class="col-md-5 col-lg-5 ml-lg-0 text-center text-md-end">
+                            <!-- Facebook -->
+                            <a class="btn btn-outline-dark btn-floating m-1" class="text-dark" role="button"><i <i
+                                    class="fa-brands fa-facebook"></i></i></a>
+                        
+                            <!-- Twitter -->
+                            <a class="btn btn-outline-dark btn-floating m-1" class="text-dark" role="button"><i
+                                    class="fab fa-twitter"></i></a>
+                        
+                            <!-- Google -->
+                            <a class="btn btn-outline-dark btn-floating m-1" class="text-dark" role="button"><i class="fab fa-google"></i></a>
+                        
+                            <!-- Instagram -->
+                            <a class="btn btn-outline-dark btn-floating m-1" class="text-dark" role="button"><i
+                                    class="fab fa-instagram"></i></a>
+                        </div>
+                        
 
                     </div>
                     <div class="col-lg-5">
@@ -86,9 +127,9 @@
 <div class="container">
 
     <!-- slider  -->
-    <section id="slider" class="pt-5">
+    <section id="slider" class="pt-3">
         <div class="container">
-            <h1 class="text-center"><b>Our Products</b></h1>
+            <h1 class="text-center"><b>Our Products</b></h1> <hr>
             <div class="slider">
                 <div class="owl-carousel">
                     {% for i in product %}
@@ -99,7 +140,7 @@
                         <div >
                             <h5 class="mb-0"><b><a href="{% url 'productdetail' i.slug %}">{{i.title}}</a></b></h5>
                             <p class="card-title">Price: <del style="color:red">{{i.marked_price}}</del> TK.{{i.sell_price}}</p>
-                            <a href="{% url 'addtocart' i.id %}" class="btn " style="background-color:#FF589B" type="submit">Add to Cart</a>
+                            <a href="{% url 'addtocart' i.id %}" class="btn btn-primary"  type="submit">Add to Cart</a>
                         </div>
                     </div>
                     {% endfor %}
@@ -124,7 +165,7 @@
             <p>Get updates on sales, specials and more</p>
             <input class="form-control" type="text" placeholder="Your Email">
             <br>
-            <button style="background-color:#FF589B" class="btn panda-btn">submit</button>
+            <button class="btn btn-primary">submit</button>
         </div>
     </div>
 </section>
